@@ -1,0 +1,42 @@
+{{define "index"}}<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{.Title}}</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Environment</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Reason</th>
+                <th>Update reason</th>
+            </tr>
+            {{range .Environments}}
+            <tr>
+                <td>{{.Name}}</td>
+                <td>
+                    {{if .User }} 
+                    <img height="20" width="20" src="{{.User.AvatarURL}}"/> 
+                    {{.User.Username}}
+                    {{end}}
+                </td>
+                <td>
+                    <form action="/api/environments/{{.Name}}/toggle" method="POST">
+                        <button type="submit">{{if .User }} Unlock {{else}} Lock {{end}}</button>
+                    </form>
+                </td>
+                <td>{{.Reason}}</td>
+                <td>
+                    <form action="/api/environments/{{.Name}}/update_reason" method="POST">
+                        <input type="text" name="reason"><br>
+                        <input type="submit" value="Submit">
+                    </form>
+                </td>
+            </tr>
+            {{end}}
+        </table>
+    </body>
+</html>
+{{end}}
